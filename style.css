@@ -1,38 +1,22 @@
-const API =
-"https://smooth-cheating-refund.ngrok-free.dev";
+body{
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+}
 
-async function sendMessage() {
+#messages{
+    height: 500px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    padding: 10px;
+}
 
-    const input =
-        document.getElementById("message");
+.user{
+    text-align:right;
+    margin:10px;
+}
 
-    const msg = input.value;
-
-    if(!msg) return;
-
-    const messages =
-        document.getElementById("messages");
-
-    messages.innerHTML +=
-        `<div class="user">${msg}</div>`;
-
-    input.value = "";
-
-    const res = await fetch(
-        API + "/chat",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({
-                message: msg
-            })
-        }
-    );
-
-    const data = await res.json();
-
-    messages.innerHTML +=
-        `<div class="ai">${data.answer}</div>`;
+.ai{
+    text-align:left;
+    margin:10px;
 }
