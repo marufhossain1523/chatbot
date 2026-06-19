@@ -36,3 +36,8 @@ async function sendMessage() {
     messages.innerHTML +=
         `<div class="ai">${data.answer}</div>`;
 }
+function saveApi() {
+    const url = document.getElementById("apiUrl").value.trim();
+    localStorage.setItem("api_url", url);
+    alert("Connected!");
+}
