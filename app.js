@@ -1,25 +1,46 @@
-// 1. Update this line with your live ngrok URL
+const chatMessages = document.getElementById('chat-messages');
+const chatForm = document.getElementById('chat-form');
+const userInput = document.getElementById('user-input');
+
 const BACKEND_URL = "https://smooth-cheating-refund.ngrok-free.dev"; 
 
-async function sendMessageToBot(userMessage) {
+chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const messageText = userInput.value.trim();
+    if (!messageText) return;
+
+    // 1. Append User Message to UI
+    appendMessage(messageText, 'user-message');
+    userInput.value = '';
+
     try {
-        // 2. Adjust the endpoint to match whatever route you set up (e.g., /api/chat)
+        // 2. Fetch from Kaggle backend
         const response = await fetch(`${BACKEND_URL}/api/chat`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // CRITICAL: This bypasses the ngrok interstitial warning page
                 "ngrok-skip-browser-warning": "true" 
             },
-            body: JSON.stringify({ message: userMessage })
+            body: JSON.stringify({ message: messageText })
         });
         
         const data = await response.json();
-        console.log("Bot response:", data);
         
-        // Handle displaying 'data' in your UI chat bubble here...
+        // 3. Append Bot Response to UI
+        appendMessage(data.response, 'bot-message');
         
     } catch (error) {
-        console.error("Error communicating with backend:", error);
+        console.error(error);
+        appendMessage("Error: Could not connect to backend.", 'bot-message');
     }
+});
+
+function appendMessage(text, className) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', className);
+    messageDiv.innerText = text;
+    chatMessages.appendChild(messageDiv);
+    
+    // Auto-scroll to the bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
