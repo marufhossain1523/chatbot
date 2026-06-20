@@ -15,15 +15,17 @@ chatForm.addEventListener('submit', async (e) => {
 
     try {
         // 2. Fetch from Kaggle backend
+        // Update this specific block in your frontend code:
         const response = await fetch(`${BACKEND_URL}/api/chat`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                // ADD THIS CRITICAL LINE:
                 "ngrok-skip-browser-warning": "true" 
             },
             body: JSON.stringify({ message: messageText })
         });
-        
+                
         const data = await response.json();
         
         // 3. Append Bot Response to UI
